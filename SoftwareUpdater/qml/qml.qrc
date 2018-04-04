@@ -1,0 +1,13 @@
+<RCC>
+    <qresource prefix="/">
+        <file>main.qml</file>
+        <file>images/DNAI_logo_purple_512.png</file>
+        <file>images/DNAI_logo_purple_128.png</file>
+        <file>images/DNAI_logo_purple_256.png</file>
+        <file>fonts/SF UI Text Light.otf</file>
+        <file>fonts/SF UI Text Light Italic.otf</file>
+        <file>images/background.png</file>
+        <file>images/logo_300dpi_dnai.png</file>
+        <file>fonts/SF UI Text Bold.otf</file>
+    </qresource>
+</RCC>
