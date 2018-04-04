@@ -18,23 +18,10 @@ Item {
         source: "images/background.png"
     }
 
-    /*Text {
-        id: title
-        color: "white"
-        font.pointSize: 36
-        x: window.width / 2 - title.width / 2
-        font.family: sfLight.name
-        y: 5 //window.commonMargin
-        //text: qsTr("Welcome to the DNAI Updater !")
-    }*/
-
     Image {
         id: logo
         x: window.width / 2 - logo.width / 2
         y: 35
-        //anchors.top: title.bottom
-        //anchors.topMargin: window.commonMargin + 15
-        //anchors.horizontalCenter: title.horizontalCenter
         source: "images/logo_300dpi_dnai.png"
     }
 
@@ -73,15 +60,18 @@ Item {
         }
 
         MouseArea {
+            id: buttonLaunchMouse
             anchors.fill: parent
             hoverEnabled: true
             onClicked: {
                 console.log("CLIC")
             }
             onEntered: {
+                buttonLaunchMouse.cursorShape = Qt.PointingHandCursor
                 buttonLaunchText.enter()
             }
             onExited: {
+                buttonLaunchMouse.cursorShape = Qt.ArrowCursor
                 buttonLaunchText.exit()
             }
         }
