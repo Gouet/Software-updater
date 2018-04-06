@@ -9,5 +9,9 @@
         <file>images/background.png</file>
         <file>images/logo_300dpi_dnai.png</file>
         <file>fonts/SF UI Text Bold.otf</file>
+        <file>UpdaterPopUp.qml</file>
+        <file>HomePage.qml</file>
+        <file>DownloadPage.qml</file>
+        <file>images/logo_150dpi_dnai.png</file>
     </qresource>
 </RCC>
