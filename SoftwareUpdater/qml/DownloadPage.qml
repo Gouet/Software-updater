@@ -48,14 +48,23 @@ Item {
         color: "transparent"
 
     C.ProgressBar {
+
+        property int avancement: 0
+
         id: scrollBar
-        value: 0.5
+        value: Controller.avancement
         anchors.top: backgroundDownload.top
         anchors.topMargin: 10
         anchors.left: backgroundDownload.left
         anchors.leftMargin: 40
         anchors.right: backgroundDownload.right
         anchors.rightMargin: 40
+
+       // Controller.onAvancementChanged: {
+       //     avancement =
+       // }
+
+
         style: ProgressBarStyle {
                 background: Rectangle {
                     radius: 2

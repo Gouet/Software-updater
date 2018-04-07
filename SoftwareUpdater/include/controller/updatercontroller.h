@@ -12,6 +12,7 @@ class UpdaterController : public QObject {
 
     Q_PROPERTY(QString version READ version NOTIFY versionChanged)
     Q_PROPERTY(QString prevVersion READ prevVersion NOTIFY prevVersionChanged)
+    Q_PROPERTY(double avancement READ avancement NOTIFY avancementChanged)
 
 public:
     UpdaterController(QObject *parent = 0);
@@ -22,6 +23,7 @@ public:
 
     QString version();
     QString prevVersion();
+    double avancement();
 
 public slots:
    // void downloadFinished(QNetworkReply *reply);
@@ -30,6 +32,7 @@ signals:
     void internetFailed();
     void versionChanged();
     void prevVersionChanged();
+    void avancementChanged();
 
 public:
     void setVersion(QString const &version);
@@ -39,6 +42,7 @@ private:
     QString m_version;
     QString m_prevVersion;
     NetworkManagerService m_networkManagerService;
+    double m_avancement;
 };
 
 #endif // UPDATERCONTROLLER_H

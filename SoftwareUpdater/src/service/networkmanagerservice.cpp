@@ -60,15 +60,12 @@ void NetworkManagerService::downloadApplicationFileFinished(QNetworkReply *reply
         pathFile.remove(pathFile.size()  - 1, 1);
     }
     bool success = dir.mkpath(pathFile);
-  //  qDebug() << m_map[reply->url().toEncoded()];
-    qDebug() << success;
+
     QFile localFile(m_map[reply->url().toEncoded()]);
 
     fileDownloadedNbr++;
 
-    qDebug() << fileDownloadedNbr;
-
-   // localFile.setPermissions(0x7777);
+    emit avancementChanged();
 
 
         if (!localFile.open(QIODevice::WriteOnly | QIODevice::Append)) {
@@ -81,4 +78,13 @@ void NetworkManagerService::downloadApplicationFileFinished(QNetworkReply *reply
 
         localFile.write(reply->readAll());
         localFile.close();
+}
+
+double NetworkManagerService::getAvancement() const {
+    if (filesNbr != 0) {
+        qDebug() << fileDownloadedNbr << " / " << filesNbr;
+        qDebug() << (((double)fileDownloadedNbr / (double)filesNbr));
+        return (((double)fileDownloadedNbr / (double)filesNbr));
+    }
+    return (0);
 }

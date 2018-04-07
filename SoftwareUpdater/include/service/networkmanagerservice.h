@@ -20,6 +20,12 @@ public slots:
     void downloadCommonFileFinished(QNetworkReply *);
     void downloadApplicationFileFinished(QNetworkReply *);
 
+public:
+    double getAvancement() const;
+
+signals:
+    void avancementChanged();
+
 private:
     QNetworkAccessManager m_manager;
     QString m_url;

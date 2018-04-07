@@ -6,7 +6,8 @@ UpdaterController::UpdaterController(QObject *parent)
       m_version(),
       m_prevVersion(),
       m_networkManagerService() {
-
+    QObject::connect(&m_networkManagerService, SIGNAL(avancementChanged()),
+                     this, SIGNAL(avancementChanged()));
 }
 
 //void UpdaterController::downloadFinished(QNetworkReply *reply) {
@@ -42,4 +43,8 @@ QString UpdaterController::version() {
 
 QString UpdaterController::prevVersion() {
     return this->m_prevVersion;
+}
+
+double UpdaterController::avancement() {
+    return (this->m_networkManagerService.getAvancement());
 }
