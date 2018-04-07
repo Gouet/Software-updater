@@ -2,6 +2,7 @@ import QtQuick 2.6
 import QtQuick.Controls 2.3
 import QtQuick.Window 2.2
 import QtQuick.Layouts 1.3
+import UpdaterController 1.0
 
 Item {
     id: homePage
@@ -16,7 +17,6 @@ Item {
         source: "images/background.png"
     }
 
-
     Image {
         id: logo
         anchors.horizontalCenter: background.horizontalCenter
@@ -27,7 +27,6 @@ Item {
 
     Rectangle {
         id: buttonLaunch
-        //anchors.fill: background
         anchors.top: logo.bottom
         anchors.topMargin: homePage.commonMargin + 40
         anchors.horizontalCenter: logo.horizontalCenter
@@ -86,7 +85,7 @@ Item {
         anchors.top: buttonLaunch.bottom
         anchors.topMargin: commonMargin
         anchors.horizontalCenter: buttonLaunch.horizontalCenter
-        text: qsTr("Version 0.1.13 ~> 0.1.14")
+        text: qsTr("Version ") + Controller.prevVersion + " ~> " + Controller.version
     }
 
     UpdaterPopUp {

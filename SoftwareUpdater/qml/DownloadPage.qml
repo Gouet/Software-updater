@@ -1,11 +1,15 @@
 import QtQuick 2.0
-//import QtQuick.Controls 2.3
 import QtQuick.Controls 1.4 as C
 import QtQuick.Controls.Styles 1.4
 import QtQuick.Controls 2.3
+import UpdaterController 1.0
 
 Item {
     signal pressedCancelButton()
+
+    function start() {
+        Controller.start()
+    }
 
     Image {
         id: background
@@ -23,7 +27,7 @@ Item {
 
     Text {
         id: title
-        text: qsTr("Switch to version 0.1.15")
+        text: qsTr("Switch to version " + Controller.version)
         font.family: sfLight.name
         color: "white"
         font.pointSize: 18

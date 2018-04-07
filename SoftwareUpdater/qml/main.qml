@@ -2,7 +2,7 @@ import QtQuick 2.6
 import QtQuick.Controls 2.3
 import QtQuick.Window 2.2
 import QtQuick.Layouts 1.3
-//import "./updaterPopUp" as UpdaterPopUp
+import UpdaterController 1.0
 
 Item {
     id: window
@@ -25,6 +25,7 @@ Item {
         onUpdate: {
             homePage.visible = false
             downloadPage.visible = true
+            downloadPage.start()
         }
     }
 
@@ -35,6 +36,7 @@ Item {
         onPressedCancelButton: {
             homePage.visible = true
             downloadPage.visible = false
+            Controller.cancel()
         }
     }
 
