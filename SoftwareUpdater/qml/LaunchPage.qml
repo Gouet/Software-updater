@@ -1,15 +1,12 @@
-import QtQuick 2.6
-import QtQuick.Controls 2.3
-import QtQuick.Window 2.2
-import QtQuick.Layouts 1.3
+import QtQuick 2.0
+import QtGraphicalEffects 1.0
 import UpdaterController 1.0
 
 Item {
-    id: homePage
-    property int commonMargin: 10
-    property var window
+    id: launchPage
 
-    signal update()
+    property var window
+    property int commonMargin: 10
 
     Image {
         id: background
@@ -17,30 +14,61 @@ Item {
         source: "images/background.png"
     }
 
-    Image {
-        id: logo
+    Text {
+        id: successText
+        text: qsTr("Successful update !")
+        font.family: sfBold.name
+        color: "#D8C9FF"
+        font.pointSize: 40
+        font.bold: false
         anchors.horizontalCenter: background.horizontalCenter
         anchors.top: background.top
-        anchors.topMargin: 35
-        source: "images/logo_300dpi_dnai.png"
+        anchors.topMargin: 20
+       // anchors.verticalCenter: background.verticalCenter
+    }
+
+    Image {
+        id: logo
+        anchors.horizontalCenter: successText.horizontalCenter
+        anchors.verticalCenter: background.verticalCenter
+        //anchors.top: back.bottom
+        //anchors.topMargin: 20
+        source: "images/logo_250dpi_dnai.png"
     }
 
     Rectangle {
         id: buttonLaunch
         anchors.top: logo.bottom
-        anchors.topMargin: homePage.commonMargin + 40
+        anchors.topMargin: 20
         anchors.horizontalCenter: logo.horizontalCenter
         radius: 7
         height: 50
         width: logo.width// + 30
         color: "#D8C9FF"
+        /*SequentialAnimation on color
+        {
+            loops: Animation.Infinite
+
+            ColorAnimation
+            {
+                from: "#D8C9FF"
+                to: "#303030"
+                duration: 2500
+            }
+            ColorAnimation
+            {
+                from: "#303030"
+                to: "#D8C9FF"
+                duration: 0
+            }
+        }*/
 
         Text {
             property string hoverColor: "#FFFFFF"
             property string notHoverColor: "#35334A"
 
             id: buttonLaunchText
-            text: qsTr("Update")
+            text: qsTr("Launch DNAI")
             font.family: sfBold.name
             color: notHoverColor
             font.pointSize: 24
@@ -62,12 +90,8 @@ Item {
             anchors.fill: parent
             hoverEnabled: true
             onClicked: {
-                console.log("CLIC")
-                if (Controller.isApplicationLaunch()) {
-                    popup.open()
-                } else {
-                    homePage.update()
-                }
+                Controller.launchApplication()
+                Controller.quit()
             }
             onEntered: {
                 buttonLaunchMouse.cursorShape = Qt.PointingHandCursor
@@ -77,39 +101,6 @@ Item {
                 buttonLaunchMouse.cursorShape = Qt.ArrowCursor
                 buttonLaunchText.exit()
             }
-        }
-    }
-
-    Text {
-        id: version
-        color: "white"
-        font.pointSize: 12
-        font.family: sfLightItalic.name
-        font.italic: true
-        anchors.top: buttonLaunch.bottom
-        anchors.topMargin: commonMargin
-        anchors.horizontalCenter: buttonLaunch.horizontalCenter
-        text: qsTr("Version ") + Controller.prevVersion + " ~> " + Controller.version
-    }
-
-    UpdaterPopUp {
-        id: popup
-        window: homePage.window
-        title: qsTr("To update, DNAI need to restart.")
-        desc: qsTr("Restart now ?")
-
-        onPressedNoButton: {
-            console.log("PRESSED NO")
-            close()
-        }
-
-        onPressedYesButton: {
-            console.log("PRESSED YES")
-            Controller.stopApplication()
-
-            close()
-
-            homePage.update()
         }
     }
 }

@@ -8,6 +8,7 @@ Item {
     id: downloadPage
     signal pressedCancelButton()
     signal downdloadFailed();
+    signal downloadSuccess();
     property var window
 
     function start() {
@@ -66,10 +67,12 @@ Item {
 
         onFilesMovedSuccess: {
             console.log('SUCCESS')
+            downloadPage.downloadSuccess()
         }
 
         onFilesMovedFailed: {
             console.log('FAILED')
+            popupError.open()
         }
     }
 
@@ -97,13 +100,6 @@ Item {
         anchors.right: backgroundDownload.right
         anchors.rightMargin: 40
 
-       // Controller.onAvancementChanged: {
-       //     avancement =
-       // }
-
-        /*Controller.onInternetFailed: {
-
-        }*/
 
 
         style: ProgressBarStyle {
@@ -122,36 +118,6 @@ Item {
             }
     }
 
-
-
-   /* ScrollView {
-        anchors.top: scrollBar.bottom
-        anchors.bottom: backgroundDownload.bottom
-        anchors.left: scrollBar.left
-        anchors.right: scrollBar.right
-    //    anchors.topMargin: 15
-        anchors.margins: 15
-        background: Rectangle {
-            color: "#DDDDDD"
-            radius: 5
-        }
-        clip: true
-
-        ListView {
-            model: 20
-            delegate: ItemDelegate {
-                id: itemDelegate
-                highlighted: false
-                text: "Item " + index
-                font.family: sfLight.name
-                font.pointSize: 12
-                height: itemDelegate.implicitHeight - 15
-                MouseArea {
-                    anchors.fill: parent
-                }
-            }
-        }
-    }*/
 
     property int rectWidth: 80
     property int rectHeight: 35

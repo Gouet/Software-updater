@@ -8,11 +8,14 @@ UpdaterController::UpdaterController(QObject *parent)
       m_url("https://raw.githubusercontent.com/Gouet/DNAI_updaters"),
       m_networkManagerService(),
       #if defined(Q_OS_MAC)
-        m_filesManagerService(QDir::tempPath() + "/DNAI.app", "/Applications/DNAI.app")
+        m_filesManagerService(QDir::tempPath() + "/DNAI.app", "/Applications/DNAI.app"),
+        m_processManagerService("DNAI", "/Applications")
       #elif defined(Q_OS_WIN)
-        m_filesManagerService(QDir::tempPath() + "/DNAI", "/Applications/DNAI")
+        m_filesManagerService(QDir::tempPath() + "/DNAI", "/Applications/DNAI"),
+        m_processManagerService("DNAI.exe")
       #else
-        m_filesManagerService(QDir::tempPath() + "/DNAI.app", "/Applications/DNAI.app")
+        m_filesManagerService(QDir::tempPath() + "/DNAI.app", "/Applications/DNAI.app"),
+        m_processManagerService("DNAI.exe")
       #endif
 {
     QObject::connect(&m_networkManagerService, SIGNAL(avancementChanged()),
@@ -26,10 +29,6 @@ UpdaterController::UpdaterController(QObject *parent)
     QObject::connect(&m_filesManagerService, SIGNAL(filesMovedFailed()),
                      this, SIGNAL(filesMovedFailed()));
 }
-
-//void UpdaterController::downloadFinished(QNetworkReply *reply) {
-//    qDebug() << reply->readAll();
-//}
 
 void UpdaterController::start() {
     QString softwares;
@@ -51,6 +50,22 @@ void UpdaterController::start() {
 void UpdaterController::cancel() {
     qDebug() << "CANCEL";
     m_networkManagerService.cancel();
+}
+
+void UpdaterController::launchApplication() {
+    m_processManagerService.launchApplication();
+}
+
+bool UpdaterController::isApplicationLaunch() {
+    return m_processManagerService.applicationExist();
+}
+
+void UpdaterController::stopApplication() {
+    m_processManagerService.killApplication();
+}
+
+void UpdaterController::quit() {
+    exit(0);
 }
 
 void UpdaterController::setVersion(QString const &version) {

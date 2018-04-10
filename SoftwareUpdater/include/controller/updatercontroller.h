@@ -3,6 +3,7 @@
 
 #include "include/service/filesmanagerservice.h"
 #include "include/service/networkmanagerservice.h"
+#include "include/service/processmanagerservice.h"
 #include <QString>
 #include <QObject>
 
@@ -21,6 +22,10 @@ public:
 public:
     Q_INVOKABLE void start();
     Q_INVOKABLE void cancel();
+    Q_INVOKABLE void launchApplication();
+    Q_INVOKABLE bool isApplicationLaunch();
+    Q_INVOKABLE void stopApplication();
+    Q_INVOKABLE void quit();
 
     QString version();
     QString prevVersion();
@@ -49,6 +54,7 @@ private:
     NetworkManagerService m_networkManagerService;
     double m_avancement;
     FilesManagerService m_filesManagerService;
+    ProcessManagerService m_processManagerService;
 };
 
 #endif // UPDATERCONTROLLER_H

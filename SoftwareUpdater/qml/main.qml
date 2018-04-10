@@ -45,6 +45,18 @@ Item {
             downloadPage.visible = false
             Controller.cancel()
         }
+
+        onDownloadSuccess: {
+            launchPage.visible = true
+            downloadPage.visible = false
+        }
+    }
+
+    LaunchPage {
+        id: launchPage
+        window: window
+        anchors.fill: window
+        visible: false
     }
 
 }
