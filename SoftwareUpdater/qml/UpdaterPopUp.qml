@@ -4,9 +4,19 @@ import QtQuick.Window 2.2
 import QtQuick.Layouts 1.3
 
 Item {
+    id: popupManager
     property var window
     property string title: ""
     property string desc: ""
+
+    property real closePolicy: Popup.CloseOnPressOutside
+
+    property bool showNoButton: true
+    property bool showYesButton: true
+
+    property string yesStringButton: "Yes"
+    property string noStringButton: "No"
+
     signal pressedNoButton
     signal pressedYesButton
 
@@ -26,7 +36,7 @@ Item {
            height: 140
            modal: true
            focus: true
-           closePolicy: Popup.CloseOnPressOutside
+           closePolicy: popupManager.closePolicy //Popup.CloseOnPressOutside
            padding: 10
 
 
@@ -74,7 +84,9 @@ Item {
                id: rowLayout
                anchors.horizontalCenter: popupDesc.horizontalCenter
                anchors.top: popupDesc.bottom
-               anchors.topMargin: 15
+               anchors.margins: 15
+               //anchors.bottom: popupbackground.bottom
+               //anchors.bottomMargin: 10
 
              //  anchors.bottom: popupbackground.bottom
               // anchors.bottomMargin: 5
@@ -91,6 +103,7 @@ Item {
                    radius: 7
                    border.width: 1
                    border.color: "#35334A"
+                   visible: popupManager.showNoButton
 
                    function enter() {
                         itemNo.color = "#AAAAAA"
@@ -102,7 +115,7 @@ Item {
 
                    Text {
                         anchors.centerIn: parent
-                        text: "No"
+                        text: popupManager.noStringButton
                         color: "black"
                         font.pointSize: 14
                         font.bold: false
@@ -134,12 +147,13 @@ Item {
                    radius: 7
                    border.width: 1
                    border.color: "#35334A"
+                   visible: popupManager.showYesButton
 
 
                    Text {
                        id: yesTextPopUp
                         anchors.centerIn: parent
-                        text: "Yes"
+                        text: popupManager.yesStringButton
                         font.pointSize: 16
                         font.bold: true
                         font.family: sfBold.name

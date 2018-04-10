@@ -33,6 +33,13 @@ Item {
         id: downloadPage
         anchors.fill: window
         visible: false
+        window: window
+
+        onDowndloadFailed: {
+            homePage.visible = true
+            downloadPage.visible = false
+        }
+
         onPressedCancelButton: {
             homePage.visible = true
             downloadPage.visible = false

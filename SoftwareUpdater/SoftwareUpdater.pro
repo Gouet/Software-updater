@@ -6,7 +6,8 @@ CONFIG += c++11
 
 SOURCES += src/main.cpp \
     src/controller/updatercontroller.cpp \
-    src/service/networkmanagerservice.cpp
+    src/service/networkmanagerservice.cpp \
+    src/service/filesmanagerservice.cpp
 
 RESOURCES += qml/qml.qrc
 
@@ -36,4 +37,5 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 
 HEADERS += \
     include/controller/updatercontroller.h \
-    include/service/networkmanagerservice.h
+    include/service/networkmanagerservice.h \
+    include/service/filesmanagerservice.h

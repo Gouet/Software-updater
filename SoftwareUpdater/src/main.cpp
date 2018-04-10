@@ -1,6 +1,7 @@
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
 #include <QQuickView>
+#include <QTime>
 
 #include "include/controller/updatercontroller.h"
 
@@ -15,6 +16,8 @@ QObject *updaterController_singletontype_provider(QQmlEngine *engine, QJSEngine 
 int main(int argc, char *argv[])
 {
     QGuiApplication app(argc, argv);
+
+    qsrand(static_cast<quint64>(QTime::currentTime().msecsSinceStartOfDay()));
 
     QQuickView *view = new QQuickView;
 

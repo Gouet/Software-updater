@@ -5,7 +5,10 @@ import QtQuick.Controls 2.3
 import UpdaterController 1.0
 
 Item {
+    id: downloadPage
     signal pressedCancelButton()
+    signal downdloadFailed();
+    property var window
 
     function start() {
         Controller.start()
@@ -36,6 +39,40 @@ Item {
         anchors.horizontalCenter: logo.horizontalCenter
     }
 
+    UpdaterPopUp {
+        id: popupError
+        window: downloadPage.window
+        title: "Failed to update"
+        desc: "An error occured.\nThe update has failed."
+        showNoButton: false
+        yesStringButton: "Ok"
+        closePolicy: Popup.NoAutoClose
+
+        onPressedYesButton: {
+            console.log("STOP")
+            downdloadFailed()
+            //pressedCancelButton()
+            popupError.close()
+        }
+    }
+
+    Connections {
+        target: Controller
+
+        onInternetFailed: {
+            popupError.open()
+            console.log('FAILED')
+        }
+
+        onFilesMovedSuccess: {
+            console.log('SUCCESS')
+        }
+
+        onFilesMovedFailed: {
+            console.log('FAILED')
+        }
+    }
+
     Rectangle {
         id: backgroundDownload
         anchors.top: title.bottom
@@ -63,6 +100,10 @@ Item {
        // Controller.onAvancementChanged: {
        //     avancement =
        // }
+
+        /*Controller.onInternetFailed: {
+
+        }*/
 
 
         style: ProgressBarStyle {

@@ -1,6 +1,7 @@
 #ifndef UPDATERCONTROLLER_H
 #define UPDATERCONTROLLER_H
 
+#include "include/service/filesmanagerservice.h"
 #include "include/service/networkmanagerservice.h"
 #include <QString>
 #include <QObject>
@@ -26,13 +27,16 @@ public:
     double avancement();
 
 public slots:
-   // void downloadFinished(QNetworkReply *reply);
+    void onDownloadSuccess();
 
 signals:
     void internetFailed();
     void versionChanged();
     void prevVersionChanged();
     void avancementChanged();
+    void downloadSuccess();
+    void filesMovedSuccess();
+    void filesMovedFailed();
 
 public:
     void setVersion(QString const &version);
@@ -41,8 +45,10 @@ public:
 private:
     QString m_version;
     QString m_prevVersion;
+    QString m_url;
     NetworkManagerService m_networkManagerService;
     double m_avancement;
+    FilesManagerService m_filesManagerService;
 };
 
 #endif // UPDATERCONTROLLER_H
