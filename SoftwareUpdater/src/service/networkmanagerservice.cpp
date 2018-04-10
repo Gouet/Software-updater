@@ -120,8 +120,6 @@ void NetworkManagerService::downloadApplicationFileFinished(QNetworkReply *reply
     bool success = dir.mkpath(pathFile);
 
     QFile localFile(dir.path() + "/" + m_map[reply->url().toEncoded()]);
- //   qDebug() << "FILE: " << m_map[reply->url().toEncoded()];
- //   qDebug() << "--end--";
 
     fileDownloadedNbr++;
 
@@ -144,7 +142,7 @@ void NetworkManagerService::downloadApplicationFileFinished(QNetworkReply *reply
         qDebug() << reply->errorString();
     }
 
-    if (fileDownloadedNbr >= filesNbr) {
+    if (fileDownloadedNbr >= filesNbr && fileDownloadedNbr != 0 && filesNbr != 0) {
         emit downloadSuccess();
     }
 }
