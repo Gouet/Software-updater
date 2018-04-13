@@ -17,6 +17,10 @@ class UpdaterController : public QObject {
     Q_PROPERTY(double avancement READ avancement NOTIFY avancementChanged)
 
 public:
+    static QString ApplicationPath;
+    static QString ApplicationName;
+
+public:
     UpdaterController(QObject *parent = 0);
 
 public:

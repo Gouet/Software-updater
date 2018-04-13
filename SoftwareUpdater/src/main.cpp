@@ -21,11 +21,18 @@ int main(int argc, char *argv[])
 
     QQuickView *view = new QQuickView;
 
-    qmlRegisterSingletonType<UpdaterController>("UpdaterController", 1, 0, "Controller", updaterController_singletontype_provider);
-    if (argc >= 3) {
+    if (argc >= 5) {
+        UpdaterController::ApplicationPath = QString(argv[3]);
+        UpdaterController::ApplicationName = QString(argv[4]);
         static_cast<UpdaterController *>(updaterController_singletontype_provider(NULL, NULL))->setVersion(argv[2]);
         static_cast<UpdaterController *>(updaterController_singletontype_provider(NULL, NULL))->setPrevVersion(argv[1]);
+        qDebug() << UpdaterController::ApplicationPath;
+        qDebug() << UpdaterController::ApplicationName;
+        qDebug() << argv[2];
+        qDebug() << argv[1];
+
     }
+    qmlRegisterSingletonType<UpdaterController>("UpdaterController", 1, 0, "Controller", updaterController_singletontype_provider);
 
     view->setSource(QUrl(QStringLiteral("qrc:/main.qml")));
     view->show();

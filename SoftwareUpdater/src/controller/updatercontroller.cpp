@@ -1,6 +1,9 @@
 #include <QDebug>
 #include "include/controller/updatercontroller.h"
 
+QString UpdaterController::ApplicationPath = "";
+QString UpdaterController::ApplicationName = "";
+
 UpdaterController::UpdaterController(QObject *parent)
     : QObject(parent),
       m_version(),
@@ -8,14 +11,11 @@ UpdaterController::UpdaterController(QObject *parent)
       m_url("https://raw.githubusercontent.com/Gouet/DNAI_updaters"),
       m_networkManagerService(),
       #if defined(Q_OS_MAC)
-        m_filesManagerService(QDir::tempPath() + "/DNAI.app", "/Applications/DNAI.app"),
-        m_processManagerService("DNAI", "/Applications")
-      #elif defined(Q_OS_WIN)
-        m_filesManagerService(QDir::tempPath() + "/DNAI", "/Applications/DNAI"),
-        m_processManagerService("DNAI.exe")
+        m_filesManagerService(QDir::tempPath() + "/" + UpdaterController::ApplicationName + ".app", UpdaterController::ApplicationPath + "/" + UpdaterController::ApplicationName + ".app"), // /Applications/DNAI.app
+        m_processManagerService(UpdaterController::ApplicationName, UpdaterController::ApplicationPath)
       #else
-        m_filesManagerService(QDir::tempPath() + "/DNAI.app", "/Applications/DNAI.app"),
-        m_processManagerService("DNAI.exe")
+        m_filesManagerService(QDir::tempPath() + "/" + UpdaterController::ApplicationName, UpdaterController::ApplicationPath + "/" + UpdaterController::ApplicationName),
+        m_processManagerService(UpdaterController::ApplicationName + ".exe", UpdaterController::ApplicationPath)
       #endif
 {
     QObject::connect(&m_networkManagerService, SIGNAL(avancementChanged()),

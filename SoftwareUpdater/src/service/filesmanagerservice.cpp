@@ -6,9 +6,9 @@ FilesManagerService::FilesManagerService(QString const &tmpApplication, QString 
     m_tmpApplication(tmpApplication),
     m_destApplication(destApplication),
 #if defined(Q_OS_MAC)
-    m_tmpApplicationName("DNAI" + QString::number(qrand()) + ".app")
+    m_tmpApplicationName("tmpApp" + QString::number(qrand()) + ".app")
   #else
-    m_tmpApplicationName("DNAItmp" + QString::number(qrand()))
+    m_tmpApplicationName("tmpApp" + QString::number(qrand()))
 #endif
 
 {
