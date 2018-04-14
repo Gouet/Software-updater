@@ -14,7 +14,7 @@ void ProcessManagerService::killApplication() {
 #if defined(Q_OS_MAC)
     p_process.start("pkill " + m_applicationName);
   #else
-    p_process.start("process -k " + m_applicationName);
+    p_process.start("taskkill /IM " + m_applicationName + " /F");
 #endif
 
     p_process.waitForFinished();
@@ -26,9 +26,7 @@ bool ProcessManagerService::applicationExist() {
 #if defined(Q_OS_MAC)
     tasklist.start("pgrep -l " + m_applicationName);
   #else
-    qDebug() << "NO PROCESS";
-    abort();
- //   p_process.start("process -k " + m_applicationName);
+    tasklist.start("tasklist /FI \"IMAGENAME eq  " + m_applicationName + "\"");
 #endif
 
     tasklist.waitForFinished();
@@ -40,9 +38,7 @@ bool ProcessManagerService::launchApplication() {
 #if defined(Q_OS_MAC)
     QProcess::startDetached("open " + m_applicationPath + "/" + m_applicationName + ".app");
   #else
-    qDebug() << "launchApplication not implemented in windows";
-    abort();
-//    p_process.start("process -k " + m_applicationName);
+    QProcess::startDetached(m_applicationPath + "\\" + m_applicationName + ".exe");
 #endif
     return true;
 }

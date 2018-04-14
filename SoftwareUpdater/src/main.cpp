@@ -5,6 +5,10 @@
 
 #include "include/controller/updatercontroller.h"
 
+#if defined(Q_OS_WIN)
+#include <QSslSocket>
+#endif
+
 QObject *updaterController_singletontype_provider(QQmlEngine *engine, QJSEngine *scriptEngine) {
     Q_UNUSED(engine)
     Q_UNUSED(scriptEngine)
@@ -16,6 +20,12 @@ QObject *updaterController_singletontype_provider(QQmlEngine *engine, QJSEngine 
 int main(int argc, char *argv[])
 {
     QGuiApplication app(argc, argv);
+
+#if defined(Q_OS_WIN)
+    // Just to load ssl library.
+    // I don't know why. Don't ask me.
+    QSslSocket();
+#endif
 
     qsrand(static_cast<quint64>(QTime::currentTime().msecsSinceStartOfDay()));
 
@@ -36,10 +46,10 @@ int main(int argc, char *argv[])
 
     view->setSource(QUrl(QStringLiteral("qrc:/main.qml")));
     view->show();
-    view->setMinimumHeight(450);
-    view->setMinimumWidth(800);
-    view->setMaximumHeight(450);
-    view->setMaximumWidth(800);
+    view->setMinimumHeight(view->size().height());
+    view->setMinimumWidth(view->size().width());
+    view->setMaximumHeight(view->size().height());
+    view->setMaximumWidth(view->size().width());
 
 
     return app.exec();

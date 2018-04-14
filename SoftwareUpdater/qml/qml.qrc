@@ -15,5 +15,6 @@
         <file>images/logo_150dpi_dnai.png</file>
         <file>LaunchPage.qml</file>
         <file>images/logo_250dpi_dnai.png</file>
+        <file>images/logo_500dpi_dnai.png</file>
     </qresource>
 </RCC>

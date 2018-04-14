@@ -32,8 +32,8 @@ Item {
            id: popup
            x: window.width / 2 - popup.width / 2
            y: window.height / 2 - popup.height / 2
-           width: 250
-           height: 140
+           width: Qt.platform.os == "windows" ? 500 : 250
+           height: Qt.platform.os == "windows" ? 280 : 140
            modal: true
            focus: true
            closePolicy: popupManager.closePolicy //Popup.CloseOnPressOutside
@@ -56,13 +56,14 @@ Item {
 
            Text {
                id: popupTitle
+               parent: popupbackground
                horizontalAlignment: Text.AlignHCenter
                width: popup.width - popup.padding * 2
-               font.pointSize: 17
+               font.pointSize: Qt.platform.os == "windows" ? 15 : 17
                font.family: sfLight.name
                wrapMode: Text.WordWrap
                anchors.top: popupbackground.top
-               anchors.topMargin: 30
+               anchors.topMargin: 20
                font.bold: false
                color: "#35334A"
                text: title
@@ -70,9 +71,10 @@ Item {
 
            Text {
                id: popupDesc
+               parent: popupbackground
                horizontalAlignment: Text.AlignHCenter
                width: popup.width - popup.padding * 2
-               font.pointSize: 14
+               font.pointSize: Qt.platform.os == "windows" ? 12 : 14
                font.family: sfLight.name
                anchors.top: popupTitle.bottom
                anchors.topMargin: 10
@@ -80,20 +82,27 @@ Item {
                text: desc
            }
 
-           Row {
-               id: rowLayout
-               anchors.horizontalCenter: popupDesc.horizontalCenter
+           Item {
+               parent: popupbackground
+               anchors.bottom: popupbackground.bottom
+               anchors.topMargin: -10
                anchors.top: popupDesc.bottom
-               anchors.margins: 15
-               //anchors.bottom: popupbackground.bottom
-               //anchors.bottomMargin: 10
+               anchors.left: popupbackground.left
+               anchors.right: popupbackground.right
 
-             //  anchors.bottom: popupbackground.bottom
-              // anchors.bottomMargin: 5
+
+           Row {
+               parent: parent
+               id: rowLayout
+               anchors.centerIn: parent
+               //anchors.horizontalCenter: parent.horizontalCenter
+              // anchors.top: popupDesc.bottom
+              // anchors.margins: 15
+
                spacing: 30
 
-               property int rectWidth: 80
-               property int rectHeight: 35
+               property int rectWidth: Qt.platform.os == "windows" ? 160 : 80
+               property int rectHeight: Qt.platform.os == "windows" ? 70 : 35
 
                Rectangle {
                    id: itemNo
@@ -117,7 +126,7 @@ Item {
                         anchors.centerIn: parent
                         text: popupManager.noStringButton
                         color: "black"
-                        font.pointSize: 14
+                        font.pointSize: Qt.platform.os == "windows" ? 12 : 14
                         font.bold: false
                         font.family: sfLight.name
                    }
@@ -154,7 +163,7 @@ Item {
                        id: yesTextPopUp
                         anchors.centerIn: parent
                         text: popupManager.yesStringButton
-                        font.pointSize: 16
+                        font.pointSize: Qt.platform.os == "windows" ? 14 : 16
                         font.bold: true
                         font.family: sfBold.name
                         color: yesTextPopUp.notHoverColor
@@ -188,6 +197,7 @@ Item {
                        }
                    }
                }
+           }
            }
     }
 }

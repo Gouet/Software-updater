@@ -22,7 +22,7 @@ Item {
         anchors.horizontalCenter: background.horizontalCenter
         anchors.top: background.top
         anchors.topMargin: 35
-        source: "images/logo_300dpi_dnai.png"
+        source:  Qt.platform.os == "windows" ? "images/logo_500dpi_dnai.png" : "images/logo_300dpi_dnai.png"
     }
 
     Rectangle {
@@ -31,7 +31,7 @@ Item {
         anchors.topMargin: homePage.commonMargin + 40
         anchors.horizontalCenter: logo.horizontalCenter
         radius: 7
-        height: 50
+        height: Qt.platform.os == "windows" ? 90 : 50
         width: logo.width// + 30
         color: "#D8C9FF"
 

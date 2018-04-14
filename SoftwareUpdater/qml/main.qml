@@ -7,8 +7,8 @@ import UpdaterController 1.0
 Item {
     id: window
     visible: true
-    width: 800
-    height: 450
+    width: Qt.platform.os == "windows" ? 1200 : 800
+    height: Qt.platform.os == "windows" ? 750 : 450
 
     FontLoader { id: sfLightItalic; source: "fonts/SF UI Text Light Italic.otf" }
     FontLoader { id: sfLight; source: "fonts/SF UI Text Light.otf" }

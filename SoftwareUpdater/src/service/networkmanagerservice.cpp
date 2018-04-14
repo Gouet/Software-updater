@@ -6,6 +6,8 @@
 #include <QByteArray>
 #include <QFile>
 #include <QDir>
+#include <QtNetwork>
+#include <QSslSocket>
 #include "include/service/networkmanagerservice.h"
 
 NetworkManagerService::NetworkManagerService(QObject *parent)
@@ -62,6 +64,7 @@ void NetworkManagerService::downloadCommonFileFinished(QNetworkReply *reply) {
     QObject::disconnect(&m_manager, SIGNAL(finished(QNetworkReply*)), this, SLOT(downloadCommonFileFinished(QNetworkReply*)));
     QObject::connect(&m_manager, SIGNAL(finished(QNetworkReply*)), this, SLOT(downloadApplicationFileFinished(QNetworkReply*)));
 
+    qDebug() << "SUCCESS";
     QList<QByteArray> lines = reply->readAll().split('\n');
     filesNbr = 0;
     fileDownloadedNbr = 0;
