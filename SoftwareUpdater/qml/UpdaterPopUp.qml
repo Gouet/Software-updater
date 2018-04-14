@@ -63,7 +63,7 @@ Item {
                font.family: sfLight.name
                wrapMode: Text.WordWrap
                anchors.top: popupbackground.top
-               anchors.topMargin: 20
+               anchors.topMargin: Qt.platform.os == "windows" ? 20 : 15
                font.bold: false
                color: "#35334A"
                text: title
