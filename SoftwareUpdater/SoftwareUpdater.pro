@@ -4,6 +4,8 @@ QT += qml quick network
 QT += widgets
 CONFIG += c++11
 
+TARGET = "DNAI Updater"
+
 SOURCES += src/main.cpp \
     src/controller/updatercontroller.cpp \
     src/service/networkmanagerservice.cpp \
@@ -11,8 +13,6 @@ SOURCES += src/main.cpp \
     src/service/processmanagerservice.cpp
 
 RESOURCES += qml/qml.qrc
-
-#DISTFILES += qml/images/DNAI_logo_purple_512.png
 
 # Additional import path used to resolve QML modules in Qt Creator's code model
 QML_IMPORT_PATH =
