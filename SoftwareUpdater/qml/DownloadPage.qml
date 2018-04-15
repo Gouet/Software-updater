@@ -26,7 +26,7 @@ Item {
         anchors.horizontalCenter: background.horizontalCenter
         anchors.top: background.top
         anchors.topMargin: 35
-        source: "images/logo_300dpi_dnai.png"
+        source: Qt.platform.os == "windows" ? "images/logo_500dpi_dnai.png" : "images/logo_300dpi_dnai.png"
     }
 
     Text {
@@ -34,7 +34,7 @@ Item {
         text: qsTr("Switch to version " + Controller.version)
         font.family: sfLight.name
         color: "white"
-        font.pointSize: 18
+        font.pointSize:  Qt.platform.os == "windows" ? 14 : 18
         anchors.top: logo.bottom
         anchors.topMargin: 10
         anchors.horizontalCenter: logo.horizontalCenter
@@ -109,7 +109,7 @@ Item {
                     border.color: "#35334A"
                     border.width: 1
                     implicitWidth: 200
-                    implicitHeight: 24
+                    implicitHeight: Qt.platform.os == "windows" ? 30 : 24
                 }
                 progress: Rectangle {
                     color: "#D8C9FF"
@@ -119,8 +119,8 @@ Item {
     }
 
 
-    property int rectWidth: 80
-    property int rectHeight: 35
+    property int rectWidth: Qt.platform.os == "windows" ? 160 : 80
+    property int rectHeight: Qt.platform.os == "windows" ? 70 : 35
 
     Rectangle {
         id: itemCancel
@@ -147,7 +147,7 @@ Item {
              anchors.centerIn: parent
              text: "Cancel"
              color: "black"
-             font.pointSize: 14
+             font.pointSize: Qt.platform.os == "windows" ? 10 : 14
              font.bold: false
              font.family: sfLight.name
         }

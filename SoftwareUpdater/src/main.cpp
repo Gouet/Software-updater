@@ -31,6 +31,8 @@ int main(int argc, char *argv[])
 
     QQuickView *view = new QQuickView;
 
+    view->setTitle("DNAI Updater");
+
     if (argc >= 5) {
         UpdaterController::ApplicationPath = QString(argv[3]);
         UpdaterController::ApplicationName = QString(argv[4]);
