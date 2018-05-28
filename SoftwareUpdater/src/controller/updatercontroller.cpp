@@ -20,14 +20,14 @@ UpdaterController::UpdaterController(QObject *parent)
 {
     QObject::connect(&m_networkManagerService, SIGNAL(avancementChanged()),
                      this, SIGNAL(avancementChanged()));
-    QObject::connect(&m_networkManagerService, SIGNAL(internetFailed()),
-                     this, SIGNAL(internetFailed()));
+    QObject::connect(&m_networkManagerService, SIGNAL(internetFailed(QString)),
+                     this, SIGNAL(internetFailed(QString)));
     QObject::connect(&m_networkManagerService, SIGNAL(downloadSuccess()),
                      this, SLOT(onDownloadSuccess()));
     QObject::connect(&m_filesManagerService, SIGNAL(filesMovedSuccess()),
                      this, SIGNAL(filesMovedSuccess()));
-    QObject::connect(&m_filesManagerService, SIGNAL(filesMovedFailed()),
-                     this, SIGNAL(filesMovedFailed()));
+    QObject::connect(&m_filesManagerService, SIGNAL(filesMovedFailed(QString)),
+                     this, SIGNAL(filesMovedFailed(QString)));
     //m_processManagerService.launchApplication();
 
 }

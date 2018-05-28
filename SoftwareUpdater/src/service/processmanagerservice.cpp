@@ -14,7 +14,9 @@ void ProcessManagerService::killApplication() {
 #if defined(Q_OS_MAC)
     p_process.start("pkill " + m_applicationName);
   #else
-    p_process.start("taskkill /f /t /im " + m_applicationName );
+    p_process.start("taskkill /f /im " + m_applicationName );
+    p_process.start("taskkill /f /im CoreDaemon.exe");
+    p_process.start("taskkill /f /im Server.exe");
 #endif
 
     p_process.waitForFinished();

@@ -61,6 +61,7 @@ Item {
         target: Controller
 
         onInternetFailed: {
+          //  popupError.desc = code
             popupError.open()
             console.log('FAILED')
         }
@@ -72,6 +73,7 @@ Item {
 
         onFilesMovedFailed: {
             console.log('FAILED')
+            //popupError.desc = info
             popupError.open()
         }
     }

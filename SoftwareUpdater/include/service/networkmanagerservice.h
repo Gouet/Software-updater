@@ -40,7 +40,7 @@ public:
 
 signals:
     void avancementChanged();
-    void internetFailed();
+    void internetFailed(QString);
     void downloadSuccess();
     void copySuccess();
 

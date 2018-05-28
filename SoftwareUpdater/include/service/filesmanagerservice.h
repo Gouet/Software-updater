@@ -16,7 +16,7 @@ public:
 
 signals:
     void filesMovedSuccess();
-    void filesMovedFailed();
+    void filesMovedFailed(QString);
 
 private:
     QString m_tmpApplication;

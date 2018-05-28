@@ -18,14 +18,14 @@ void FilesManagerService::moveFiles() {
     QDir dir;
 
     if (!dir.rename(m_destApplication, QDir::tempPath() + "/" + m_tmpApplicationName)) {
-        emit filesMovedFailed();
+        emit filesMovedFailed("FIRST: " + m_destApplication + "   " + QDir::tempPath() + "/" + m_tmpApplicationName);
         return;
     }
 
     if ( !dir.rename(m_tmpApplication, m_destApplication) ) {
         if (!dir.rename(QDir::tempPath() + "/" + m_tmpApplicationName, m_destApplication)) {
         }
-        emit filesMovedFailed();
+        emit filesMovedFailed("SECOND: " + m_tmpApplication + "   " + m_destApplication);
         return;
     } else {
         emit filesMovedSuccess();

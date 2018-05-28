@@ -90,7 +90,7 @@ void NetworkManagerService::downloadCommonFileFinished(QNetworkReply *reply) {
 
     } else {
         m_reqQueue.enqueue(reply->request());
-        emit internetFailed();
+        emit internetFailed(reply->url().toString());
         qDebug() << reply->errorString();
     }
     qDebug() << "FILESNBR: " << filesNbr;
@@ -136,7 +136,7 @@ void NetworkManagerService::downloadApplicationFileFinished(QNetworkReply *reply
 
     } else {
         m_reqQueue.enqueue(reply->request());
-        emit internetFailed();
+        emit internetFailed(reply->url().toString());
         qDebug() << reply->errorString();
     }
 
@@ -164,7 +164,7 @@ void NetworkManagerService::requestSetup(QNetworkRequest &req) {
     foreach (QSslError const &error, errors) {
         qDebug() << error;
         if (error.error() != QSslError::SslError::NoError) {
-            emit internetFailed();
+            emit internetFailed(reply->url().toString());
             return;
         }
     }
@@ -173,18 +173,18 @@ void NetworkManagerService::requestSetup(QNetworkRequest &req) {
  void NetworkManagerService::onNetworkAccessibleChanged(QNetworkAccessManager::NetworkAccessibility accessible) {
     networkAccessible = accessible == QNetworkAccessManager::Accessible;
     if (!networkAccessible) {
-        emit internetFailed();
+        emit internetFailed("");
     }
  }
 
  void NetworkManagerService::onOnlineStateChanged(bool state) {
     if (!state) {
         networkAccessible = false;
-        emit internetFailed();
+        emit internetFailed("");
     }
  }
 
  void NetworkManagerService::timeoutReply(QNetworkRequest req){
     m_reqQueue.enqueue(req);
-    emit internetFailed();
+    emit internetFailed("");
  }

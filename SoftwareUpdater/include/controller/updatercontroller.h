@@ -39,13 +39,13 @@ public slots:
     void onDownloadSuccess();
 
 signals:
-    void internetFailed();
+    void internetFailed(QString code);
     void versionChanged();
     void prevVersionChanged();
     void avancementChanged();
     void downloadSuccess();
     void filesMovedSuccess();
-    void filesMovedFailed();
+    void filesMovedFailed(QString info);
 
 public:
     void setVersion(QString const &version);
