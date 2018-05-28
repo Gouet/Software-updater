@@ -14,7 +14,7 @@ void ProcessManagerService::killApplication() {
 #if defined(Q_OS_MAC)
     p_process.start("pkill " + m_applicationName);
   #else
-    p_process.start("taskkill /IM " + m_applicationName + " /F");
+    p_process.start("taskkill /f /t /im " + m_applicationName );
 #endif
 
     p_process.waitForFinished();
@@ -35,10 +35,17 @@ bool ProcessManagerService::applicationExist() {
 }
 
 bool ProcessManagerService::launchApplication() {
+    bool success = false;
+
 #if defined(Q_OS_MAC)
-    QProcess::startDetached("open " + m_applicationPath + "/" + m_applicationName + ".app");
+    success = QProcess::startDetached("open " + m_applicationPath + "/" + m_applicationName + ".app");
   #else
-    QProcess::startDetached(m_applicationPath + "\\" + m_applicationName + ".exe");
+    success = QProcess::startDetached(m_applicationPath + "/DNAI/" + m_applicationName);
 #endif
+    if (!success) {
+        qDebug() << "Failed to launch application";
+    } else {
+        qDebug() << "SUCESS";
+    }
     return true;
 }

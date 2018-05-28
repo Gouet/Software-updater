@@ -53,27 +53,24 @@ void NetworkManagerService::requestCommonFile(QString const &url, QString const 
 }
 
 void NetworkManagerService::downloadCommonFileFinished(QNetworkReply *reply) {
-    //qDebug() << reply->readAll();
-    if (reply->error() == QNetworkReply::OperationCanceledError) {
-        qDebug() << "OperationCanceledError" << " ligne 50 NetworkManagerService";
-        return;
-    }
 
     if (reply->error() == QNetworkReply::NoError) {
 
     QObject::disconnect(&m_manager, SIGNAL(finished(QNetworkReply*)), this, SLOT(downloadCommonFileFinished(QNetworkReply*)));
     QObject::connect(&m_manager, SIGNAL(finished(QNetworkReply*)), this, SLOT(downloadApplicationFileFinished(QNetworkReply*)));
 
-    qDebug() << "SUCCESS";
     QList<QByteArray> lines = reply->readAll().split('\n');
     filesNbr = 0;
     fileDownloadedNbr = 0;
+    bool firstTimeDir = true;
     foreach ( const QByteArray &line, lines)
     {
         QByteArray ref = line;
         if (line.size() > 4) {
         if (m_software == "mac") {
             ref.remove(0, 4);
+        } else if (m_software == "windows") {
+            ref.replace("\\", "/");
         }
         QString urlReq(m_url + m_software + "/" + ref);
 
@@ -100,12 +97,6 @@ void NetworkManagerService::downloadCommonFileFinished(QNetworkReply *reply) {
 }
 
 void NetworkManagerService::downloadApplicationFileFinished(QNetworkReply *reply) {
-  //  qDebug() << reply->readAll();
-
-    if (reply->error() == QNetworkReply::OperationCanceledError) {
-        qDebug() << "OperationCanceledError" << " ligne 96 NetworkManagerService";
-        return;
-    }
 
     if (reply->error() == QNetworkReply::NoError) {
         if (!m_reqQueue.empty()) {
@@ -115,7 +106,6 @@ void NetworkManagerService::downloadApplicationFileFinished(QNetworkReply *reply
 
 
     QDir dir = QDir::temp();
-   // qDebug() << "DIR: " << dir.path();
     QString pathFile = m_map[reply->url().toEncoded()];
     while (pathFile[pathFile.size() - 1] != '/') {
         pathFile.remove(pathFile.size()  - 1, 1);
@@ -123,6 +113,11 @@ void NetworkManagerService::downloadApplicationFileFinished(QNetworkReply *reply
     bool success = dir.mkpath(pathFile);
 
     QFile localFile(dir.path() + "/" + m_map[reply->url().toEncoded()]);
+
+    QFileInfo fileInfo(localFile.fileName());
+    QString filename(fileInfo.absolutePath());
+
+    qDebug() << filename;
 
     fileDownloadedNbr++;
 
@@ -160,15 +155,12 @@ double NetworkManagerService::getAvancement() const {
 }
 
 void NetworkManagerService::requestSetup(QNetworkRequest &req) {
-    //qDebug() << "ADDED";
     QNetworkReply* reply = m_manager.get(req);
-    ReplyTimeout *replyT = ReplyTimeout::set(reply, 20000);
+    ReplyTimeout *replyT = ReplyTimeout::set(reply, 60000);
     connect(replyT, SIGNAL(timeout(QNetworkRequest)), this, SLOT(timeoutReply(QNetworkRequest)));
-  //  connect(reply, SIGNAL(error(QNetworkReply::NetworkError)), this, SLOT(onRequestReplyError(QNetworkReply::NetworkError)));
 }
 
  void NetworkManagerService::sslErrors(QNetworkReply *reply, const QList<QSslError> &errors) {
-     qDebug() << "ERROR";
     foreach (QSslError const &error, errors) {
         qDebug() << error;
         if (error.error() != QSslError::SslError::NoError) {
@@ -180,30 +172,19 @@ void NetworkManagerService::requestSetup(QNetworkRequest &req) {
 
  void NetworkManagerService::onNetworkAccessibleChanged(QNetworkAccessManager::NetworkAccessibility accessible) {
     networkAccessible = accessible == QNetworkAccessManager::Accessible;
-    qDebug() << "enter";
     if (!networkAccessible) {
         emit internetFailed();
     }
  }
 
  void NetworkManagerService::onOnlineStateChanged(bool state) {
-    qDebug() << state << " CHANGED";
     if (!state) {
         networkAccessible = false;
         emit internetFailed();
     }
  }
 
- /*void NetworkManagerService::onRequestReplyError(QNetworkReply::NetworkError error) {
-    if (error != QNetworkReply::NetworkError::NoError && error != QNetworkReply::NetworkError::OperationCanceledError) {
-        qDebug() << "error";
-        qDebug() << error;
-        emit internetFailed();
-    }
- }*/
-
  void NetworkManagerService::timeoutReply(QNetworkRequest req){
-    qDebug() << "error TIMEOUT";
     m_reqQueue.enqueue(req);
     emit internetFailed();
  }

@@ -28,6 +28,8 @@ UpdaterController::UpdaterController(QObject *parent)
                      this, SIGNAL(filesMovedSuccess()));
     QObject::connect(&m_filesManagerService, SIGNAL(filesMovedFailed()),
                      this, SIGNAL(filesMovedFailed()));
+    //m_processManagerService.launchApplication();
+
 }
 
 void UpdaterController::start() {

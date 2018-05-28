@@ -24,44 +24,24 @@ Item {
         anchors.horizontalCenter: background.horizontalCenter
         anchors.top: background.top
         anchors.topMargin: 20
-       // anchors.verticalCenter: background.verticalCenter
     }
 
     Image {
         id: logo
         anchors.horizontalCenter: successText.horizontalCenter
         anchors.verticalCenter: background.verticalCenter
-        //anchors.top: back.bottom
-        //anchors.topMargin: 20
-        source: "images/logo_250dpi_dnai.png"
+        source: Qt.platform.os == "windows" ? "images/logo_300dpi_dnai.png" : "images/logo_250dpi_dnai.png"
     }
 
     Rectangle {
         id: buttonLaunch
         anchors.top: logo.bottom
-        anchors.topMargin: 20
+        anchors.topMargin: Qt.platform.os == "windows" ? 40 : 20
         anchors.horizontalCenter: logo.horizontalCenter
         radius: 7
-        height: 50
-        width: logo.width// + 30
+        height: Qt.platform.os == "windows" ? 85 : 50
+        width: Qt.platform.os == "windows" ? 55 + buttonLaunchText.width : logo.width
         color: "#D8C9FF"
-        /*SequentialAnimation on color
-        {
-            loops: Animation.Infinite
-
-            ColorAnimation
-            {
-                from: "#D8C9FF"
-                to: "#303030"
-                duration: 2500
-            }
-            ColorAnimation
-            {
-                from: "#303030"
-                to: "#D8C9FF"
-                duration: 0
-            }
-        }*/
 
         Text {
             property string hoverColor: "#FFFFFF"

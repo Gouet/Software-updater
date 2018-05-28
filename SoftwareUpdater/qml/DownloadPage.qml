@@ -131,7 +131,6 @@ Item {
         border.width: 1
         border.color: "#35334A"
         anchors.top: scrollBar.bottom
-     //   anchors.left: backgroundDownload.left
         anchors.topMargin: 20
         anchors.horizontalCenter: backgroundDownload.horizontalCenter
 
