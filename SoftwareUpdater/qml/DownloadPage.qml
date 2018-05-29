@@ -61,7 +61,7 @@ Item {
         target: Controller
 
         onInternetFailed: {
-          //  popupError.desc = code
+           // popupError.desc = code
             popupError.open()
             console.log('FAILED')
         }

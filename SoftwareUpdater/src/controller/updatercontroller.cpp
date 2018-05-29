@@ -14,7 +14,7 @@ UpdaterController::UpdaterController(QObject *parent)
         m_filesManagerService(QDir::tempPath() + "/" + UpdaterController::ApplicationName + ".app", UpdaterController::ApplicationPath + "/" + UpdaterController::ApplicationName + ".app"), // /Applications/DNAI.app
         m_processManagerService(UpdaterController::ApplicationName, UpdaterController::ApplicationPath)
       #else
-        m_filesManagerService(QDir::tempPath() + "/" + UpdaterController::ApplicationName, UpdaterController::ApplicationPath + "/" + UpdaterController::ApplicationName),
+        m_filesManagerService(QDir::tempPath() + "/" + UpdaterController::ApplicationName, UpdaterController::ApplicationPath),
         m_processManagerService(UpdaterController::ApplicationName + ".exe", UpdaterController::ApplicationPath)
       #endif
 {

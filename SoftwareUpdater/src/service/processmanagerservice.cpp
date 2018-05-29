@@ -15,8 +15,11 @@ void ProcessManagerService::killApplication() {
     p_process.start("pkill " + m_applicationName);
   #else
     p_process.start("taskkill /f /im " + m_applicationName );
+    p_process.waitForFinished();
     p_process.start("taskkill /f /im CoreDaemon.exe");
+    p_process.waitForFinished();
     p_process.start("taskkill /f /im Server.exe");
+    p_process.waitForFinished();
 #endif
 
     p_process.waitForFinished();
@@ -42,7 +45,7 @@ bool ProcessManagerService::launchApplication() {
 #if defined(Q_OS_MAC)
     success = QProcess::startDetached("open " + m_applicationPath + "/" + m_applicationName + ".app");
   #else
-    success = QProcess::startDetached(m_applicationPath + "/DNAI/" + m_applicationName);
+    success = QProcess::startDetached(m_applicationPath + "/" + m_applicationName);
 #endif
     if (!success) {
         qDebug() << "Failed to launch application";
