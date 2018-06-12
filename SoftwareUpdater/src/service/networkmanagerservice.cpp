@@ -8,7 +8,9 @@
 #include <QDir>
 #include <QtNetwork>
 #include <QSslSocket>
+#include <iterator>
 #include "include/service/networkmanagerservice.h"
+#include "include/service/filerightsservice.h"
 
 NetworkManagerService::NetworkManagerService(QObject *parent)
     : QObject(parent),
@@ -20,7 +22,8 @@ NetworkManagerService::NetworkManagerService(QObject *parent)
       filesNbr(0),
       fileDownloadedNbr(0),
       networkAccessible(true),
-      m_reqQueue(){
+      m_reqQueue(),
+      m_rights() {
     networkAccessible = m_manager.networkAccessible() == QNetworkAccessManager::Accessible;
     qDebug() << networkAccessible;
     QObject::connect(&m_manager, SIGNAL(sslErrors(QNetworkReply*,QList<QSslError>)), this, SLOT(sslErrors(QNetworkReply*,QList<QSslError>)));
@@ -47,7 +50,15 @@ void NetworkManagerService::requestCommonFile(QString const &url, QString const 
         QObject::disconnect(&m_manager, SIGNAL(finished(QNetworkReply*)), this, SLOT(downloadApplicationFileFinished(QNetworkReply*)));
         QObject::connect(&m_manager, SIGNAL(finished(QNetworkReply*)), this, SLOT(downloadCommonFileFinished(QNetworkReply*)));
 
+#ifdef Q_OS_MAC
+        QDir dir(QDir::tempPath() + "/" + "DNAI.app");
+#else
+        QDir dir(QDir::tempPath() + "/" + "DNAI");
+#endif
+        dir.removeRecursively();
+
         QNetworkRequest request(url + software + "_files.updater");
+        m_rights.clear();
         requestSetup(request);
     }
 }
@@ -62,13 +73,14 @@ void NetworkManagerService::downloadCommonFileFinished(QNetworkReply *reply) {
     QList<QByteArray> lines = reply->readAll().split('\n');
     filesNbr = 0;
     fileDownloadedNbr = 0;
-    bool firstTimeDir = true;
     foreach ( const QByteArray &line, lines)
     {
         QByteArray ref = line;
         if (line.size() > 4) {
         if (m_software == "mac") {
+            QByteArray copyRight = ref.left(3);
             ref.remove(0, 4);
+            m_rights[QString(ref.toStdString().c_str())] = QString(copyRight.toStdString().c_str());
         } else if (m_software == "windows") {
             ref.replace("\\", "/");
         }
@@ -116,20 +128,38 @@ void NetworkManagerService::downloadApplicationFileFinished(QNetworkReply *reply
 
     QFileInfo fileInfo(localFile.fileName());
     QString filename(fileInfo.absolutePath());
+    QString rights = "777";
 
     qDebug() << filename;
+    qDebug() << pathFile;
+  //  qDebug() << "rly ? => " << m_rights.find(m_map[reply->url().toEncoded()]);
+    QMap<QString, QString>::iterator it = m_rights.find(m_map[reply->url().toEncoded()]);
+    if (it != m_rights.end()) {
+        qDebug() << it.value();
+        rights = it.value();
+    }
 
     fileDownloadedNbr++;
 
     emit avancementChanged();
 
         if (!localFile.open(QIODevice::WriteOnly | QIODevice::Truncate)) {
-            return;
+            qDebug() << "truncate";
+            if (!localFile.open(QIODevice::WriteOnly)) {
+                qDebug() << "failed for " << localFile.fileName();
+                return;
+            }
+            //return;
         }
 
-        localFile.setPermissions(QFile::ReadOwner | QFile::WriteOwner | QFile::ExeOwner | QFile::ReadUser
+        FileRightsService rightsService;
+
+        rightsService.setPermission(localFile, rights);
+
+
+     /*   localFile.setPermissions(QFile::ReadOwner | QFile::WriteOwner | QFile::ExeOwner | QFile::ReadUser
                                   | QFile::ExeUser  | QFile::ReadGroup
-                                   | QFile::ExeGroup );
+                                   | QFile::ExeGroup ); */
 
         localFile.write(reply->readAll());
         localFile.close();
@@ -140,7 +170,9 @@ void NetworkManagerService::downloadApplicationFileFinished(QNetworkReply *reply
         qDebug() << reply->errorString();
     }
 
+    qDebug() << "download ?";
     if (fileDownloadedNbr >= filesNbr && fileDownloadedNbr != 0 && filesNbr != 0) {
+        qDebug() << "DOWNLOAD Sucess ???";
         emit downloadSuccess();
     }
 }

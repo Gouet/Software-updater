@@ -10,7 +10,9 @@ SOURCES += src/main.cpp \
     src/controller/updatercontroller.cpp \
     src/service/networkmanagerservice.cpp \
     src/service/filesmanagerservice.cpp \
-    src/service/processmanagerservice.cpp
+    src/service/processmanagerservice.cpp \
+    src/service/filerightsservice.cpp
+
 
 RESOURCES += qml/qml.qrc
 
@@ -40,4 +42,6 @@ HEADERS += \
     include/controller/updatercontroller.h \
     include/service/networkmanagerservice.h \
     include/service/filesmanagerservice.h \
-    include/service/processmanagerservice.h
+    include/service/processmanagerservice.h \
+    include/service/filerightsservice.h
+

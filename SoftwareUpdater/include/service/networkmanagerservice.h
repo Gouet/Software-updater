@@ -54,6 +54,7 @@ private:
     int fileDownloadedNbr;
     bool networkAccessible;
     QQueue<QNetworkRequest> m_reqQueue;
+    QMap<QString, QString> m_rights;
 
 };
 

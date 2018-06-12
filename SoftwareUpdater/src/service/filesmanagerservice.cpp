@@ -37,11 +37,6 @@ static bool cpDir(const QString &srcPath, const QString &dstPath, bool willRmDir
 {
     if (willRmDir)
         rmDir(dstPath);
-    //QDir parentDstDir(QFileInfo(dstPath).path());
-    //if (!parentDstDir.mkdir(QFileInfo(dstPath).fileName())) {
-    //    toto = "titi: " + dstPath + "  = " + QFileInfo(dstPath).fileName();
-       // return false;
-    //}
 
     QDir srcDir(srcPath);
     foreach(const QFileInfo &info, srcDir.entryInfoList(QDir::Dirs | QDir::Files | QDir::NoDotAndDotDot)) {
@@ -81,18 +76,17 @@ void FilesManagerService::moveFiles() {
 
 #if defined(Q_OS_MAC)
     if (!dir.rename(m_destApplication, QDir::tempPath() + "/" + m_tmpApplicationName)) {
-        emit filesMovedFailed("FIRST: " + m_destApplication + "   " + QDir::tempPath() + "/" + m_tmpApplicationName);
-        return;
+      //  emit filesMovedFailed("FIRST: " + m_destApplication + "   " + QDir::tempPath() + "/" + m_tmpApplicationName);
+   //     return;
     }
 
     if ( !dir.rename(m_tmpApplication, m_destApplication) ) {
-        if (!dir.rename(QDir::tempPath() + "/" + m_tmpApplicationName, m_destApplication)) {
-        }
+        if (!dir.rename(QDir::tempPath() + "/" + m_tmpApplicationName, m_destApplication)) {}
         emit filesMovedFailed("SECOND: " + m_tmpApplication + "   " + m_destApplication);
-        return;
     } else {
+        qDebug() << "move other";
         emit filesMovedSuccess();
-        removeTmpFile();
+      //  removeTmpFile();
     }
 #else
     bool pDirGood = cpDir(m_destApplication, QDir::tempPath() + "/" + m_tmpApplicationName, false);
@@ -110,10 +104,12 @@ void FilesManagerService::moveFiles() {
         return;
     } else {
         emit filesMovedSuccess();
-        removeTmpFile();
+      //  removeTmpFile();
     }
 
 #endif
+        QDir dir2(QDir::tempPath() + "/" + m_tmpApplicationName);
+        dir2.removeRecursively();
 }
 
 void FilesManagerService::removeTmpFile() {
